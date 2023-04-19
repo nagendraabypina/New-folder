@@ -1,19 +1,44 @@
 
 import './App.css';
-import ExpenseItem from './Components/ExpenseItem';
-
-import React from 'react'
+import React from 'react';
+import { useState } from 'react';
+import Jokes from './Components/Jokes';
+import Stories from './Components/Stories';
 
 function App(props) {
-	const expenses = [{ id : 1, title : 'LPG', amount : 1150, date : 'Feb 23 2023'},
-	{ id : 2, title : 'Milk', amount : 1000, date : 'Feb 24 2023'},
-	{ id : 3, title : 'Hospital expenses', amount : 1500, date :'Feb 25 2023'}];
+	const [oldState , NewState] = useState(0);
+	const [query,setQuery] = useState('');
+
+	function stateUpdater(){
+		NewState(oldState + 1);
+	}
+	function queryUpdater(e){
+		setQuery(e.target.value);
+		//console.log(setQuery);
+	}
+	function searchQuery(){
+		window.open(`https://www.google.com/search?q=${query}`, '_blank');
+	}
+
+	function enterHandler(e){
+		if(e.key === 'Enter'){
+			searchQuery();
+		}
+	}
   return (
 	<div>
-		<ExpenseItem title={expenses[0].title} amount={expenses[0].amount} date={expenses[0].date}/>
-		<ExpenseItem title={expenses[1].title} amount={expenses[1].amount} date={expenses[1].date}/>
-		<ExpenseItem title={expenses[2].title} amount={expenses[2].amount} date={expenses[2].date}/>
-
+		<h1 onClick={stateUpdater}>Hello User Click me : {oldState} </h1>
+		<h2> you clicked me : {oldState} times</h2>
+		<div className='form'>
+			<input value={query} onChange={queryUpdater} onKeyUp={enterHandler} style={{marginRight : 10}}/>
+			<button onClick={searchQuery}>Search</button>
+		</div>
+		<div>
+			<Jokes/>
+		</div>
+		<div>
+			<Stories/>
+		</div>
 	</div>
   )
 }
